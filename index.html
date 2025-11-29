@@ -122,6 +122,24 @@
             );
         };
 
+        // 只读数据行组件 (新功能使用)
+        const ReadOnlyRow = ({ label, value }) => {
+            const numValue = typeof value === 'number' ? value : 0;
+            return (
+                <div className="flex items-center justify-between py-1 px-1 mb-0.5 gap-2">
+                    <label className="text-xs font-bold w-5/12 sm:w-5/12 flex-shrink-0 text-slate-400 truncate">
+                        {label}
+                    </label>
+                    <div className="relative w-7/12 sm:w-7/12 min-w-0 text-right">
+                        <span className="text-[10px] text-slate-400/70 font-bold mr-1 select-none">¥</span>
+                        <span className="text-slate-500 dark:text-slate-400 font-bold font-sans text-sm tracking-tight">
+                            {numValue.toFixed(2)}
+                        </span>
+                    </div>
+                </div>
+            );
+        };
+
         // 结果单元格 - 紧凑版
         const ResultBox = ({ label, value, subtext, highlightColor = "text-slate-800", isNegativeRed = false, isLast = false, border = true }) => {
             const numValue = typeof value === 'number' ? value : 0;
@@ -162,8 +180,19 @@
 
             const nsRent = parse(newStore.rent);
             const nsTerms = parse(newStore.paymentTerms);
+            
+            // 计算日均数据
+            const nsDailyRent = nsRent / 30;
+            const nsMonthlyLabor = parse(newStore.monthlyLabor);
+            const nsDailyLabor = nsMonthlyLabor / 30;
+            const nsMonthlyUtilities = parse(newStore.utilities);
+            const nsDailyUtilities = nsMonthlyUtilities / 30;
+
             const nsSetupCost = (nsRent * nsTerms) + parse(newStore.deposit) + parse(newStore.transferFee) + parse(newStore.franchiseFee) + parse(newStore.renovationAds) + parse(newStore.equipment) + parse(newStore.materials);
-            const nsDailyFixed = (nsRent + parse(newStore.monthlyLabor) + parse(newStore.utilities)) / 30;
+            
+            // 每日固定成本 = 日房租 + 日人工 + 日杂费
+            const nsDailyFixed = nsDailyRent + nsDailyLabor + nsDailyUtilities;
+            
             const nsMargin = parse(newStore.grossMargin) / 100;
             const nsBreakEven = nsMargin > 0 ? nsDailyFixed / nsMargin : 0;
 
@@ -176,10 +205,9 @@
 
             return (
                 <div className="min-h-screen bg-[#F2F3F5] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 font-sans p-2 lg:p-4 transition-colors duration-300 pb-10 flex flex-col items-center">
-                    {/* 修改点：max-w 从 1600px 减小到 6xl (约1150px)，让电脑端更紧凑 */}
                     <div className="w-full max-w-6xl mx-auto h-full flex flex-col">
                         
-                        {/* Header 更加紧凑 */}
+                        {/* Header */}
                         <div className="flex flex-col md:flex-row items-center justify-between mb-3 pb-2 gap-2">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-white dark:bg-slate-800 rounded-xl text-slate-800 dark:text-white shadow-sm border border-white dark:border-white/10">
@@ -195,9 +223,9 @@
                             </div>
                         </div>
 
-                        {/* 核心布局: 减小 gap */}
+                        {/* 核心布局 */}
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4 items-start">
-                            {/* 模块1 */}
+                            {/* 模块1：建店成本 */}
                             <div className="bg-white dark:bg-[#111623] rounded-2xl shadow-sm border border-white dark:border-white/5 flex flex-col h-auto overflow-hidden">
                                 <div className="h-1 w-full bg-orange-200"></div>
                                 <div className="p-4 pb-1"><ModuleHeader icon={HammerIcon} title="新开店：建店成本" bgColor="bg-orange-50" iconColor="text-orange-500" /></div>
@@ -216,7 +244,7 @@
                                 </div>
                             </div>
 
-                            {/* 模块2 */}
+                            {/* 模块2：盈亏平衡 (已修改) */}
                             <div className="bg-white dark:bg-[#111623] rounded-2xl shadow-sm border border-white dark:border-white/5 flex flex-col h-auto overflow-hidden">
                                 <div className="h-1 w-full bg-indigo-200"></div>
                                 <div className="p-4 pb-1"><ModuleHeader icon={PieChartIcon} title="新开店：盈亏平衡" bgColor="bg-indigo-50" iconColor="text-indigo-500" /></div>
@@ -224,15 +252,22 @@
                                     <InputField theme="indigo" label="预估人工费 (每月)" value={newStore.monthlyLabor} onChange={v => setNewStore({...newStore, monthlyLabor: v})} required />
                                     <InputField theme="indigo" label="预估水/电/杂费 (每月)" value={newStore.utilities} onChange={v => setNewStore({...newStore, utilities: v})} required />
                                     <InputField theme="indigo" label="预估毛利率" value={newStore.grossMargin} onChange={v => setNewStore({...newStore, grossMargin: v})} required prefix="%" suffix="" />
-                                    {/* 移除了中间的装饰性文字块，极大节省空间 */}
+                                    
+                                    {/* 新增的自动计算区域 */}
+                                    <div className="pt-2 mt-2 border-t border-dashed border-slate-200 dark:border-white/10 space-y-0.5">
+                                        <div className="px-1 mb-1 text-[10px] text-slate-300 dark:text-slate-600 font-bold tracking-wider">自动折算日成本 (/30天)</div>
+                                        <ReadOnlyRow label="每日房租" value={nsDailyRent} />
+                                        <ReadOnlyRow label="预估每日人工费" value={nsDailyLabor} />
+                                        <ReadOnlyRow label="预估每日水/电/杂费" value={nsDailyUtilities} />
+                                    </div>
                                 </div>
                                 <div className="bg-slate-50 dark:bg-[#0F131F] border-t border-slate-100 dark:border-white/5 flex">
-                                    <ResultBox label="每日固定成本" value={nsDailyFixed} subtext="(房租+人工+杂费)/30" highlightColor="text-indigo-600 dark:text-indigo-400" />
+                                    <ResultBox label="每日固定成本" value={nsDailyFixed} subtext="日房租+日人工+日杂费" highlightColor="text-indigo-600 dark:text-indigo-400" />
                                     <ResultBox label="日盈亏平衡点" value={nsBreakEven} highlightColor="text-indigo-600 dark:text-indigo-400" subtext="固定成本 ÷ 毛利率" isLast={true} />
                                 </div>
                             </div>
 
-                            {/* 模块3 */}
+                            {/* 模块3：经营分析 */}
                             <div className="bg-white dark:bg-[#111623] rounded-2xl shadow-sm border border-white dark:border-white/5 flex flex-col h-auto overflow-hidden">
                                 <div className="h-1 w-full bg-emerald-200"></div>
                                 <div className="p-4 pb-1"><ModuleHeader icon={TrendingUpIcon} title="已开店：经营分析" bgColor="bg-emerald-50" iconColor="text-emerald-500" /></div>
