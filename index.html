@@ -301,8 +301,8 @@
                                     />
                                 </div>
                                 <div className="px-4 pb-4 flex-1 space-y-0.5">
-                                    <InputField theme="indigo" label="预估人工费 (每月)" value={newStore.monthlyLabor} onChange={v => setNewStore({...newStore, monthlyLabor: v})} required />
-                                    <InputField theme="indigo" label="预估水电杂费 (每月)" value={newStore.utilities} onChange={v => setNewStore({...newStore, utilities: v})} required />
+                                    <InputField theme="indigo" label="预估每月人工费" value={newStore.monthlyLabor} onChange={v => setNewStore({...newStore, monthlyLabor: v})} required />
+                                    <InputField theme="indigo" label="预估每月水电杂费" value={newStore.utilities} onChange={v => setNewStore({...newStore, utilities: v})} required />
                                     <InputField theme="indigo" label="预估毛利率" value={newStore.grossMargin} onChange={v => setNewStore({...newStore, grossMargin: v})} required prefix="%" suffix="" />
                                     
                                     {/* 自动计算区域 */}
@@ -332,20 +332,20 @@
                                     />
                                 </div>
                                 <div className="px-4 pb-4 flex-1 space-y-0.5">
-                                    <InputField theme="emerald" label="营业额 (每天)" value={existingStore.dailyRevenue} onChange={v => setExistingStore({...existingStore, dailyRevenue: v})} required />
-                                    <InputField theme="emerald" label="房租 (每天)" value={existingStore.dailyRent} onChange={v => setExistingStore({...existingStore, dailyRent: v})} required />
-                                    <InputField theme="emerald" label="人工费 (每天)" value={existingStore.dailyLabor} onChange={v => setExistingStore({...existingStore, dailyLabor: v})} required />
-                                    <InputField theme="emerald" label="水/电/杂费 (每天)" value={existingStore.dailyUtilities} onChange={v => setExistingStore({...existingStore, dailyUtilities: v})} required />
+                                    <InputField theme="emerald" label="营业额 (每日)" value={existingStore.dailyRevenue} onChange={v => setExistingStore({...existingStore, dailyRevenue: v})} required />
+                                    <InputField theme="emerald" label="房租 (每日)" value={existingStore.dailyRent} onChange={v => setExistingStore({...existingStore, dailyRent: v})} required />
+                                    <InputField theme="emerald" label="人工费 (每日)" value={existingStore.dailyLabor} onChange={v => setExistingStore({...existingStore, dailyLabor: v})} required />
+                                    <InputField theme="emerald" label="水/电/杂费 (每日)" value={existingStore.dailyUtilities} onChange={v => setExistingStore({...existingStore, dailyUtilities: v})} required />
                                     <InputField theme="emerald" label="实际毛利率" value={existingStore.grossMargin} onChange={v => setExistingStore({...existingStore, grossMargin: v})} required prefix="%" suffix="" />
                                 </div>
                                 <div className="bg-slate-50 dark:bg-[#0F131F] border-t border-slate-100 dark:border-white/5 mt-auto">
                                     <div className="flex border-b border-slate-100 dark:border-white/5">
-                                        <ResultBox label="毛利 (每天)" value={exGrossProfit} isNegativeRed={true} />
-                                        <ResultBox label="固定成本 (每天)" value={exFixedCost} isLast={true} isNegativeRed={true} />
+                                        <ResultBox label="毛利 (每日)" value={exGrossProfit} isNegativeRed={true} />
+                                        <ResultBox label="固定成本 (每日)" value={exFixedCost} isLast={true} isNegativeRed={true} />
                                     </div>
                                     <div className="flex">
-                                        <ResultBox label="保本线 (每天)" value={exBreakEven} isNegativeRed={true} subtext="固定成本 ÷ 毛利率" />
-                                        <ResultBox label="净利润 (每天)" value={exNetProfit} isNegativeRed={true} subtext="毛利 - 固定成本" isLast={true} />
+                                        <ResultBox label="保本线 (每日)" value={exBreakEven} isNegativeRed={true} subtext="固定成本 ÷ 毛利率" />
+                                        <ResultBox label="净利润 (每日)" value={exNetProfit} isNegativeRed={true} subtext="毛利 - 固定成本" isLast={true} />
                                     </div>
                                 </div>
                             </div>
