@@ -287,7 +287,7 @@
                                     <InputField theme="indigo" label="预估毛利率" value={newStore.grossMargin} onChange={v => setNewStore({...newStore, grossMargin: v})} required prefix="%" suffix="" />
                                     
                                     <div className="pt-2 mt-2 border-t border-dashed border-slate-200 dark:border-white/10 space-y-0.5">
-                                        <div className="px-1 mb-1 text-[10px] text-slate-300 dark:text-slate-600 font-bold tracking-wider">自动折算的每日成本</div>
+                                        <div className="px-1 mb-1 text-[10px] text-slate-300 dark:text-slate-600 font-bold tracking-wider">自动折算的每日成本(无需手动输入)</div>
                                         <ReadOnlyRow label="每日房租" value={nsDailyRent} />
                                         <ReadOnlyRow label="预估每日人工费" value={nsDailyLabor} />
                                         <ReadOnlyRow label="预估每日水/电/杂费" value={nsDailyUtilities} />
