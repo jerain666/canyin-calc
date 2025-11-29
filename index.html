@@ -205,9 +205,9 @@
                                     <InputField theme="orange" label="每月房租 (元)" value={newStore.rent} onChange={v => setNewStore({...newStore, rent: v})} required />
                                     <InputField theme="orange" label="几个月一付" value={newStore.paymentTerms} onChange={v => setNewStore({...newStore, paymentTerms: v})} suffix="" required prefix="" />
                                     <InputField theme="orange" label="押金" value={newStore.deposit} onChange={v => setNewStore({...newStore, deposit: v})} />
-                                    <InputField theme="orange" label="转让费、中介费" value={newStore.transferFee} onChange={v => setNewStore({...newStore, transferFee: v})} />
-                                    <InputField theme="orange" label="加盟费、学习费" value={newStore.franchiseFee} onChange={v => setNewStore({...newStore, franchiseFee: v})} />
-                                    <InputField theme="orange" label="装修费、广告费" value={newStore.renovationAds} onChange={v => setNewStore({...newStore, renovationAds: v})} />
+                                    <InputField theme="orange" label="转让费/中介费" value={newStore.transferFee} onChange={v => setNewStore({...newStore, transferFee: v})} />
+                                    <InputField theme="orange" label="加盟费/学习费" value={newStore.franchiseFee} onChange={v => setNewStore({...newStore, franchiseFee: v})} />
+                                    <InputField theme="orange" label="装修费/广告费" value={newStore.renovationAds} onChange={v => setNewStore({...newStore, renovationAds: v})} />
                                     <InputField theme="orange" label="设备费" value={newStore.equipment} onChange={v => setNewStore({...newStore, equipment: v})} />
                                     <InputField theme="orange" label="首批物料" value={newStore.materials} onChange={v => setNewStore({...newStore, materials: v})} />
                                 </div>
@@ -221,8 +221,8 @@
                                 <div className="h-1 w-full bg-indigo-200"></div>
                                 <div className="p-4 pb-1"><ModuleHeader icon={PieChartIcon} title="新开店：盈亏平衡" bgColor="bg-indigo-50" iconColor="text-indigo-500" /></div>
                                 <div className="px-4 pb-4 flex-1 space-y-0.5">
-                                    <InputField theme="indigo" label="人工费 (每月)" value={newStore.monthlyLabor} onChange={v => setNewStore({...newStore, monthlyLabor: v})} required />
-                                    <InputField theme="indigo" label="水、电、杂费 (每月)" value={newStore.utilities} onChange={v => setNewStore({...newStore, utilities: v})} required />
+                                    <InputField theme="indigo" label="预估人工费 (每月)" value={newStore.monthlyLabor} onChange={v => setNewStore({...newStore, monthlyLabor: v})} required />
+                                    <InputField theme="indigo" label="预估水/电/杂费 (每月)" value={newStore.utilities} onChange={v => setNewStore({...newStore, utilities: v})} required />
                                     <InputField theme="indigo" label="预估毛利率" value={newStore.grossMargin} onChange={v => setNewStore({...newStore, grossMargin: v})} required prefix="%" suffix="" />
                                     {/* 移除了中间的装饰性文字块，极大节省空间 */}
                                 </div>
