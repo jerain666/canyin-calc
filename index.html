@@ -34,10 +34,6 @@
                     },
                     colors: {
                         slate: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1', 400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155', 800: '#1e293b', 900: '#0f172a' },
-                    },
-                    screens: {
-                        'xl': '1280px',
-                        '2xl': '1536px',
                     }
                 }
             }
@@ -45,6 +41,20 @@
     </script>
 
     <style>
+        /* 核心魔法：响应式根字体缩放 
+           这会让页面在不同宽度的屏幕上“等比例放大”，
+           而不是简单地拉宽间距。
+        */
+        html {
+            font-size: 16px; /* 默认基准 */
+        }
+        @media (min-width: 1280px) {
+            html { font-size: 18px; } /* 大屏放大 112.5% */
+        }
+        @media (min-width: 1536px) {
+            html { font-size: 20px; } /* 超大屏放大 125% */
+        }
+
         body {
             background-color: #F2F3F5;
             -webkit-tap-highlight-color: transparent;
@@ -67,11 +77,11 @@
     <script type="text/babel">
         const { useState } = React;
 
-        // 图标组件
-        const CalculatorIcon = ({size=20, className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>);
-        const HammerIcon = ({size=18, className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25V7.86c0-.55-.45-1-1-1H14.14c-.83 0-1.64.33-2.25.94L9.5 10.2"/></svg>);
-        const PieChartIcon = ({size=18, className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>);
-        const TrendingUpIcon = ({size=18, className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>);
+        // 图标组件 (修改为接收 className 来控制大小，实现跟随 rem 缩放)
+        const CalculatorIcon = ({className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>);
+        const HammerIcon = ({className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25V7.86c0-.55-.45-1-1-1H14.14c-.83 0-1.64.33-2.25.94L9.5 10.2"/></svg>);
+        const PieChartIcon = ({className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>);
+        const TrendingUpIcon = ({className=""}) => (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>);
 
         // 输入框组件 - 紧凑版
         const InputField = ({ label, value, onChange, required, suffix = "", prefix = "¥", theme = "indigo" }) => {
@@ -146,7 +156,7 @@
         const ModuleHeader = ({ icon: Icon, title, bgColor, iconColor }) => (
             <div className="flex items-center gap-2 mb-2 pl-1">
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center shadow-sm transition-transform hover:scale-105 ${bgColor} dark:bg-opacity-20`}>
-                    <Icon size={16} className={iconColor} strokeWidth={2.5} />
+                    <Icon className={`w-4 h-4 ${iconColor}`} strokeWidth={2.5} />
                 </div>
                 <h3 className="text-sm font-bold text-slate-800 dark:text-white tracking-wide">{title}</h3>
             </div>
@@ -179,18 +189,19 @@
             const exBreakEven = exMargin > 0 ? exFixedCost / exMargin : 0;
 
             return (
-                // 调整：添加 lg:flex lg:flex-col lg:justify-center 以实现电脑端垂直居中
-                // 调整：min-h-screen 保证至少占满一屏
+                // 布局策略：
+                // 1. max-w-5xl 锁定最大宽度 (约1024px)，保持布局紧凑不拉伸。
+                // 2. 通过 html { font-size } 的媒体查询，在大屏上等比例放大整个容器。
+                // 3. lg:justify-center 保证在垂直空间足够时居中显示。
                 <div className="min-h-screen bg-[#F2F3F5] dark:bg-[#0B0F19] text-slate-900 dark:text-slate-100 font-sans p-2 lg:p-4 transition-colors duration-300 flex flex-col items-center lg:justify-center">
                     
-                    {/* 调整：响应式宽度 max-w-5xl -> xl:max-w-7xl -> 2xl:max-w-[1600px] */}
-                    <div className="w-full max-w-5xl xl:max-w-7xl 2xl:max-w-[1600px] flex flex-col">
+                    <div className="w-full max-w-5xl flex flex-col">
                         
                         {/* Header */}
                         <div className="flex flex-col md:flex-row items-center justify-between mb-3 pb-2 gap-2">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 bg-white dark:bg-slate-800 rounded-xl text-slate-800 dark:text-white shadow-sm border border-white dark:border-white/10">
-                                    <CalculatorIcon size={20} className="stroke-2 text-indigo-600 dark:text-indigo-400" />
+                                    <CalculatorIcon className="w-5 h-5 stroke-2 text-indigo-600 dark:text-indigo-400" />
                                 </div>
                                 <h1 className="text-lg font-black tracking-tighter text-slate-800 dark:text-white font-sans">餐饮投资计算器</h1>
                             </div>
@@ -202,8 +213,8 @@
                             </div>
                         </div>
 
-                        {/* 核心布局: 响应式 Gap */}
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4 xl:gap-6 2xl:gap-8 items-start">
+                        {/* 核心布局 */}
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4 items-start">
                             {/* 模块1 */}
                             <div className="bg-white dark:bg-[#111623] rounded-2xl shadow-sm border border-white dark:border-white/5 flex flex-col h-auto overflow-hidden">
                                 <div className="h-1 w-full bg-orange-200"></div>
