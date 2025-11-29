@@ -302,7 +302,7 @@
                                 </div>
                                 <div className="px-4 pb-4 flex-1 space-y-0.5">
                                     <InputField theme="indigo" label="预估人工费 (每月)" value={newStore.monthlyLabor} onChange={v => setNewStore({...newStore, monthlyLabor: v})} required />
-                                    <InputField theme="indigo" label="预估水/电/杂费 (每月)" value={newStore.utilities} onChange={v => setNewStore({...newStore, utilities: v})} required />
+                                    <InputField theme="indigo" label="预估水电杂费 (每月)" value={newStore.utilities} onChange={v => setNewStore({...newStore, utilities: v})} required />
                                     <InputField theme="indigo" label="预估毛利率" value={newStore.grossMargin} onChange={v => setNewStore({...newStore, grossMargin: v})} required prefix="%" suffix="" />
                                     
                                     {/* 自动计算区域 */}
